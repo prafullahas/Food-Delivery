@@ -2,6 +2,7 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import foodModel from "../models/foodModel.js";
 import Stripe from "stripe";
+import { ORDER_STATUSES, STATUS_TRANSITIONS, LEGACY_STATUS_MAP } from "../constants/orderStatus.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -141,9 +142,44 @@ const listOrders = async (req, res) => {
 // api for updating status
 const updateStatus = async (req, res) => {
   try {
-    await orderModel.findByIdAndUpdate(req.body.orderId, {
-      status: req.body.status,
-    });
+    const { orderId, status } = req.body;
+
+    // Validate orderId
+    if (!orderId) {
+      return res.status(400).json({ success: false, message: "Order ID is required" });
+    }
+
+    // Validate status
+    if (!status) {
+      return res.status(400).json({ success: false, message: "Status is required" });
+    }
+
+    // Find the order
+    const order = await orderModel.findById(orderId);
+    if (!order) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    // Validate requested status against ORDER_STATUSES
+    if (!ORDER_STATUSES.includes(status)) {
+      return res.status(400).json({ success: false, message: "Invalid status value" });
+    }
+
+    // Normalize legacy status for transition logic
+    const currentStatus = LEGACY_STATUS_MAP[order.status] || order.status;
+
+    // Check if transition is valid
+    const validTransitions = STATUS_TRANSITIONS[currentStatus] || [];
+    if (!validTransitions.includes(status)) {
+      return res.status(400).json({ 
+        success: false, 
+        message: `Invalid status transition from ${currentStatus} to ${status}` 
+      });
+    }
+
+    // Update only the status field
+    await orderModel.findByIdAndUpdate(orderId, { status });
+
     res.json({ success: true, message: "Status Updated Successfully" });
   } catch (error) {
     console.log(error);
