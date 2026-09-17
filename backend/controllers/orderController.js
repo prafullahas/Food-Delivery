@@ -1,5 +1,6 @@
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
+import foodModel from "../models/foodModel.js";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -8,36 +9,69 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const placeOrder = async (req, res) => {
   const frontend_url = process.env.FRONTEND_URL || "http://localhost:5173";
   try {
+    // Validate items and calculate server-side amount
+    if (!req.body.items || !Array.isArray(req.body.items) || req.body.items.length === 0) {
+      return res.status(400).json({ success: false, message: "Invalid items: items array is required" });
+    }
+
+    let serverAmount = 0;
+    const line_items = [];
+
+    for (const item of req.body.items) {
+      // Validate item structure
+      if (!item._id) {
+        return res.status(400).json({ success: false, message: "Invalid item: missing _id" });
+      }
+      if (!item.quantity || !Number.isInteger(item.quantity) || item.quantity <= 0) {
+        return res.status(400).json({ success: false, message: "Invalid item: quantity must be a positive integer" });
+      }
+
+      // Fetch food item from database
+      const foodItem = await foodModel.findById(item._id);
+      if (!foodItem) {
+        return res.status(400).json({ success: false, message: `Food item not found: ${item._id}` });
+      }
+
+      // Calculate item subtotal using database price
+      const itemSubtotal = foodItem.price * item.quantity;
+      serverAmount += itemSubtotal;
+
+      // Build Stripe line item using database values
+      line_items.push({
+        price_data: {
+          currency: "inr",
+          product_data: {
+            name: foodItem.name,
+          },
+          unit_amount: foodItem.price * 100,
+        },
+        quantity: item.quantity,
+      });
+    }
+
+    // Add delivery fee
+    const deliveryFee = 2;
+    serverAmount += deliveryFee;
+
+    line_items.push({
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: "Delivery Charges",
+        },
+        unit_amount: deliveryFee * 100,
+      },
+      quantity: 1,
+    });
+
     const newOrder = new orderModel({
       userId: req.user.id,
       items: req.body.items,
-      amount: req.body.amount,
+      amount: serverAmount,
       address: req.body.address,
     });
     await newOrder.save();
     await userModel.findByIdAndUpdate(req.user.id, { cartData: {} });
-
-    const line_items = req.body.items.map((item) => ({
-      price_data: {
-        currency: "usd",
-        product_data: {
-          name: item.name,
-        },
-        unit_amount: item.price * 100,
-      },
-      quantity: item.quantity,
-    }));
-
-    line_items.push({
-      price_data: {
-        currency: "usd",
-        product_data: {
-          name: "Delivery Charges",
-        },
-        unit_amount: 2 * 100,
-      },
-      quantity: 1,
-    });
 
     const session = await stripe.checkout.sessions.create({
       line_items: line_items,

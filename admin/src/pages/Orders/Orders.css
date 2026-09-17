@@ -2,38 +2,57 @@
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr 1fr;
     align-items: start;
-    gap: 30px;
-    border: 1px solid tomato;
-    padding: 20px;
-    margin: 30px 0px;
+    gap: var(--spacing-lg);
+    border: 1px solid var(--color-accent);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-lg) 0;
     font-size: 14px;
-    color: #505050;
+    color: var(--color-text-light);
+    border-radius: var(--radius-md);
+    background-color: var(--color-card);
+    box-shadow: var(--shadow-sm);
+    transition: all 0.3s ease;
+}
+.order-item:hover{
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
 }
 .order-item-food, .order-item-name{
     font-weight: 600;
+    color: var(--color-text);
 }
 .order-item-name{
-    margin-top: 30px;
-    margin-bottom: 5px;
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-xs);
 }
 .order-item-address{
-    margin-bottom: 10px;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-light);
 }
 .order-item select{
-    background-color: #ffe8e4;
-    border: 1px solid tomato;
+    background-color: var(--color-background-alt);
+    border: 1px solid var(--color-accent);
     width: max(11vw,120px);
     padding: 10px;
     outline: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text);
+    transition: all 0.3s ease;
+}
+.order-item select:focus{
+    box-shadow: 0 0 0 3px rgba(255, 140, 66, 0.1);
 }
 @media (max-width:1000px) {
     .order-item{
         font-size: 12px;
         grid-template-columns: 0.5fr 2fr 1fr;
-        padding: 15px 8px;
+        padding: var(--spacing-md) var(--spacing-sm);
+        gap: var(--spacing-md);
     }
     .order-item select{
-        padding: 5px;
+        padding: 8px;
         font-size: 12px;
     }
     .order-item img{

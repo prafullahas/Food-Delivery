@@ -11,6 +11,12 @@ const StoreContextProvider = (props) => {
   const [food_list, setFoodList] = useState([]);
 
   const addToCart = async (itemId) => {
+    const itemInfo = food_list.find((product) => product._id === itemId);
+    if (!itemInfo || itemInfo.isAvailable === false) {
+      toast.error("Item is not available");
+      return;
+    }
+    
     if (!cartItems[itemId]) {
       setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
     } else {

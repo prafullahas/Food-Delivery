@@ -81,3 +81,16 @@
 .food-item-counter img:hover{
     transform: scale(1.1);
 }
+.food-item-unavailable{
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    background-color: var(--color-error);
+    color: white;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: not-allowed;
+    box-shadow: var(--shadow-md);
+}

@@ -1,37 +1,95 @@
 .add{
     width: 70%;
     margin-left: max(5vw,25px);
-    margin-top: 50px;
-    color: #6d6d6d;
+    margin-top: var(--spacing-xl);
+    color: var(--color-text-light);
     font-size: 16px;
 }
+.add h2{
+    color: var(--color-text);
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: var(--spacing-lg);
+}
 .add form{
-    gap: 20px;
+    gap: var(--spacing-lg);
 }
 .add-img-upload img{
     width: 120px;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
 }
 .add-product-name, .add-product-description{
     width: max(40%,280px);
 }
 .add-product-name input, .add-product-description textarea{
-    padding: 10px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-card);
+    color: var(--color-text);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.add-product-name input:focus, .add-product-description textarea:focus{
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
 }
 .add-category-price{
     display: flex;
-    gap: 30px;
+    gap: var(--spacing-lg);
 }
 .add-category-price select, .add-category-price input{
     max-width: 120px;
-    padding: 10px;
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-card);
+    color: var(--color-text);
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.add-category-price select:focus, .add-category-price input:focus{
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
+}
+.add-availability{
+    max-width: 120px;
+}
+.add-availability select{
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-card);
+    color: var(--color-text);
+    font-size: 14px;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.add-availability select:focus{
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
 }
 .add-btn{
     max-width: 120px;
     border: none;
-    padding: 10px;
-    background-color: black;
+    padding: 12px 24px;
+    background-color: var(--color-primary);
     color: white;
     cursor: pointer;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-md);
+}
+.add-btn:hover{
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 @media (max-width:400px) {
     .add{

@@ -2,22 +2,139 @@
     display: grid;
     grid-template-columns: 0.5fr 2fr 1fr 1fr 0.5fr;
     align-items: center;
-    gap: 10px;
-    padding: 12px 15px;
-    border: 1px solid #cacaca;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md) var(--spacing-lg);
+    border: 1px solid var(--color-border);
     font-size: 13px;
+    border-radius: var(--radius-md);
+    background-color: var(--color-card);
+    transition: all 0.3s ease;
+}
+.list-table-format:hover{
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
 }
 .list-table-format.title{
-    background-color: #f9f9f9;
+    background-color: var(--color-background-alt);
+    font-weight: 600;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 12px;
 }
 .list-table-format img{
     width: 50px;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+}
+.list-table-format p{
+    color: var(--color-text-light);
+}
+.list-table-format p:last-child{
+    color: var(--color-accent);
+    font-weight: 600;
+}
+.list-actions{
+    display: flex;
+    gap: var(--spacing-md);
+}
+.list-actions p{
+    color: var(--color-primary);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.list-actions p:hover{
+    color: var(--color-accent);
+}
+.list-actions p:last-child{
+    color: var(--color-error);
+}
+.list-actions p:last-child:hover{
+    color: var(--color-error-dark);
+}
+.edit-modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.edit-modal-content{
+    background-color: var(--color-card);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    max-width: 500px;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+.edit-modal-content h3{
+    color: var(--color-text);
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+}
+.edit-modal-content input,
+.edit-modal-content textarea,
+.edit-modal-content select{
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+}
+.edit-modal-content input:focus,
+.edit-modal-content textarea:focus,
+.edit-modal-content select:focus{
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(45, 90, 39, 0.1);
+}
+.edit-modal-buttons{
+    display: flex;
+    gap: var(--spacing-md);
+    margin-top: var(--spacing-sm);
+}
+.edit-modal-buttons button{
+    flex: 1;
+    padding: 12px 24px;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.edit-modal-buttons button:first-child{
+    background-color: var(--color-primary);
+    color: white;
+}
+.edit-modal-buttons button:first-child:hover{
+    background-color: var(--color-primary-dark);
+}
+.edit-modal-buttons button:last-child{
+    background-color: var(--color-border);
+    color: var(--color-text);
+}
+.edit-modal-buttons button:last-child:hover{
+    background-color: var(--color-error);
+    color: white;
 }
 
 @media (max-width:600px) {
     .list-table-format{
         grid-template-columns: 1fr 3fr 1fr;
-        gap: 15px;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) var(--spacing-md);
     }
     .list-table-format.title{
         display: none;

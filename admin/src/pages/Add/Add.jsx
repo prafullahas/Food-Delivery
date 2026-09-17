@@ -17,6 +17,7 @@ const Add = ({url}) => {
     description: "",
     price: "",
     category: "Salad",
+    isAvailable: true,
   });
 
   const onChangeHandler = (event) => {
@@ -33,6 +34,7 @@ const Add = ({url}) => {
     formData.append("price", Number(data.price));
     formData.append("category", data.category);
     formData.append("image", image);
+    formData.append("isAvailable", data.isAvailable);
 
     const response = await axios.post(`${url}/api/food/add`, formData,{headers:{token}});
     if (response.data.success) {
@@ -41,6 +43,7 @@ const Add = ({url}) => {
         description: "",
         price: "",
         category: "Salad",
+        isAvailable: true,
       });
       setImage(false);
       toast.success(response.data.message);
@@ -125,6 +128,17 @@ const Add = ({url}) => {
               required
             />
           </div>
+        </div>
+        <div className="add-availability flex-col">
+          <p>Availability</p>
+          <select
+            name="isAvailable"
+            onChange={onChangeHandler}
+            value={data.isAvailable}
+          >
+            <option value={true}>Available</option>
+            <option value={false}>Unavailable</option>
+          </select>
         </div>
         <button type="submit" className="add-btn">
           ADD

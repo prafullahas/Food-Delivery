@@ -2,14 +2,27 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 4%;
+    padding: var(--spacing-md) 4%;
+    background-color: var(--color-card);
+    box-shadow: var(--shadow-sm);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 .navbar .logo{
     width: max(10%,80px);
 }
 .navbar .profile{
     width: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+.navbar .profile:hover{
+    transform: scale(1.05);
 }
 .login-conditon{
     font-size: 20px;
+    color: var(--color-text);
+    font-weight: 500;
 }

@@ -1,8 +1,18 @@
 import userModel from "../models/userModel.js";
+import foodModel from "../models/foodModel.js";
 
 // add items to user cart
 const addToCart = async (req, res) => {
   try {
+    // Check if food item exists and is available
+    const food = await foodModel.findById(req.body.itemId);
+    if (!food) {
+      return res.status(400).json({ success: false, message: "Food item not found" });
+    }
+    if (food.isAvailable === false) {
+      return res.status(400).json({ success: false, message: "Food item is not available" });
+    }
+    
     let userData = await userModel.findById(req.user.id);
     let cartData = await userData.cartData;
     if (!cartData[req.body.itemId]) {
