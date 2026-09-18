@@ -2,7 +2,7 @@ import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import foodModel from "../models/foodModel.js";
 import Stripe from "stripe";
-import { ORDER_STATUSES, STATUS_TRANSITIONS, LEGACY_STATUS_MAP } from "../constants/orderStatus.js";
+import { canTransitionStatus, isValidStatus, normalizeStatus } from "../utils/orderStatusUtils.js";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
@@ -160,20 +160,17 @@ const updateStatus = async (req, res) => {
       return res.status(404).json({ success: false, message: "Order not found" });
     }
 
-    // Validate requested status against ORDER_STATUSES
-    if (!ORDER_STATUSES.includes(status)) {
+    // Validate requested status
+    if (!isValidStatus(status)) {
       return res.status(400).json({ success: false, message: "Invalid status value" });
     }
 
-    // Normalize legacy status for transition logic
-    const currentStatus = LEGACY_STATUS_MAP[order.status] || order.status;
-
-    // Check if transition is valid
-    const validTransitions = STATUS_TRANSITIONS[currentStatus] || [];
-    if (!validTransitions.includes(status)) {
+    // Check if transition is valid using utility function
+    if (!canTransitionStatus(order.status, status)) {
+      const normalizedCurrent = normalizeStatus(order.status);
       return res.status(400).json({ 
         success: false, 
-        message: `Invalid status transition from ${currentStatus} to ${status}` 
+        message: `Invalid status transition from ${normalizedCurrent} to ${status}` 
       });
     }
 
