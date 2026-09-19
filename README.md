@@ -77,3 +77,49 @@ BiteFlow is a full-stack food delivery platform with separate customer and admin
              │  MongoDB   │    │   Stripe   │
              │   Atlas    │    │  Payments  │
              └────────────┘    └────────────┘
+
+
+⚙️ Local Setup
+1. Clone the repository
+git clone https://github.com/prafullahas/Food-Delivery.git
+cd Food-Delivery/Food-Delivery
+2. Backend
+cd backend
+npm install
+
+Create a .env file using .env.example:
+MONGO_URL=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+STRIPE_SECRET_KEY=your_stripe_secret_key
+FRONTEND_URL=http://localhost:5173
+ADMIN_URL=http://localhost:5174
+SALT=your_salt
+
+Start the backend:
+npm start
+3. Customer Frontend
+cd ../frontend
+npm install
+
+Create .env:
+VITE_API_URL=http://localhost:4000
+
+Start:
+npm run dev
+4. Admin
+cd ../admin
+npm install
+
+Create .env:
+VITE_API_URL=http://localhost:4000
+
+Start:
+npm run dev
+
+🌐 Deployment
+Component	Platform
+Customer Frontend	Vercel
+Admin Dashboard	Vercel
+Backend API	Render
+Database	MongoDB Atlas
+Payments
